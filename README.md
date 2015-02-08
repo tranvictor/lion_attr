@@ -1,4 +1,7 @@
 # LionAttr
+[![Circle CI](https://circleci.com/gh/tranvictor/lion_attr/tree/master.svg?style=svg)](https://circleci.com/gh/tranvictor/lion_attr/tree/master)
+[![Code Climate](https://codeclimate.com/github/tranvictor/lion_attr/badges/gpa.svg)](https://codeclimate.com/github/tranvictor/lion_attr)
+
 Store Mongoid object in Redis for fast access. It also helps you to store object
 attributes to update via Redis increamental operations.
 
