@@ -17,6 +17,11 @@ the database later (like after 10 mins, 30 mins or even a day).
 
 LionAttr provides APIs for you to do so with ease.
 
+## Install
+```
+gem install lion-attr
+```
+
 ## Usage
 ```ruby
 class Article
