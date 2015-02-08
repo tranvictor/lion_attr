@@ -1,0 +1,6 @@
+test:
+  sessions:
+    default:
+      database: lion_attr_test
+      hosts:
+        - localhost:27017
