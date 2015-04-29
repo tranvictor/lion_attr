@@ -200,7 +200,7 @@ module LionAttr
       internal_redis ||= InternalRedis.new(name)
       _incr(_key(id, field), fields[field.to_s].type,
             @internal_redis, increment) do
-        find_by(live_key => id).read_attribute(field)
+        find_by(live_key => id).read_attribute(field) rescue 0
       end
     rescue => e
       e.message
@@ -209,7 +209,7 @@ module LionAttr
     def _incr(key, type, internal_redis = nil, increment = 1, &block)
       internal_redis ||= InternalRedis.new(name)
       if block && !internal_redis.exists(key)
-        internal_redis.setnx key, block.call
+        internal_redis.set key, block.call
       end
       if type == Integer
         internal_redis.incrby(key, increment)
