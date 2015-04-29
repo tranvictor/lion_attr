@@ -154,7 +154,6 @@ describe LionAttr do
   describe '#key' do
     it 'should contain object id and field name' do
       expect(@test.key(:foo)).to eq("#{@test.id}_foo")
-      puts @test.key(:foo)
     end
   end
 
@@ -212,6 +211,26 @@ describe LionAttr do
         @instance = TestCustomKey1.new :foo => 100
         expect(@instance.key(:bar)).to eq "100_bar"
       end
+
+      it 'should work fine if the attribute is not initialized to redis yet' do
+        class TestCustomKey2
+          include Mongoid::Document
+          include LionAttr
+          field :foo
+          field :bar, type: Integer
+          live :bar
+          self.live_key = :foo
+        end
+        @test = TestCustomKey2.new
+        @test.foo = "customkey"
+        @test.bar = 50
+        @test.save
+        @redis = LionAttr::InternalRedis.new(@test.class.name)
+        @redis.del @test.key(:bar)
+        TestCustomKey2.incr "customkey", :bar
+        expect(@test.bar).to eq 51
+      end
+
     end
 
     describe '#incr' do

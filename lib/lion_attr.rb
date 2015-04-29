@@ -200,7 +200,7 @@ module LionAttr
       internal_redis ||= InternalRedis.new(name)
       _incr(_key(id, field), fields[field.to_s].type,
             @internal_redis, increment) do
-        find(id).read_attribute(field)
+        find_by(live_key => id).read_attribute(field)
       end
     rescue => e
       e.message
@@ -222,18 +222,18 @@ module LionAttr
 
     def generate_incr_method
       define_method('incr') do |field, increment = 1|
-      begin
-        unless self.class.live_fields.include?(field)
-          fail "#{field} is not a live attributes"
+        begin
+          unless self.class.live_fields.include?(field)
+            fail "#{field} is not a live attributes"
+          end
+          @internal_redis ||= InternalRedis.new(self.class.name)
+          self.class._incr(key(field),
+                           fields[field.to_s].type,
+                           @internal_redis,
+                           increment) { read_attribute(field) }
+        rescue => e
+          e.message
         end
-        @internal_redis ||= InternalRedis.new(self.class.name)
-        self.class._incr(key(field),
-                         fields[field.to_s].type,
-                         @internal_redis,
-                         increment) { read_attribute(field) }
-      rescue => e
-        e.message
-      end
       end
     end
 
