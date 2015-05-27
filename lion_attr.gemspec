@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   # s.add_dependency "rails", "~> 4.1.6"
   s.add_dependency "redis", "~> 3.1"
-  s.add_dependency "mongoid", "~> 4.0"
+  s.add_dependency "mongoid", ">= 4.0"
   s.add_dependency "connection_pool", "~> 2.0"
 
   s.add_development_dependency "rspec", "~> 3.1"
